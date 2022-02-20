@@ -82,7 +82,7 @@ function pkt() {
                 // Bogenschützen
                 zelle.innerText = "0"
                 if (s > 1 && s < 10 && z > 1 && z < 10) {
-                    zelle.innerText = "4,5"
+                    zelle.innerText = "4.5"
                     pktBogenschützen += 4.5
                 }
             } else if (zelle.classList.contains("Krieger")) {
