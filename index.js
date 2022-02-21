@@ -20,14 +20,65 @@ function nextMinion() {
 function allMinions() {
     for (c = 0; c < 100; c++)
         nextMinion()
+    // console.log(pktGesamt)
+    
+    result = {
+        "Krieger" : pktKrieger,
+        "Bogenschützen" : pktBogenschützen,
+        "Assasine" : pktAssasine,
+        "Schutzwall" : pktSchutzwall,
+        "Magier" : pktMagier,
+        "Priester" : pktPriester,
+        "GESAMT" : pktGesamt
+    }
+
+    return (result)
+    
+}
+
+function clearAll() {
+    for (z = 1; z < 11; z++) {
+        for (s = 1; s < 11; s++) {
+            id = s + "-" + z
+            //console.log(id)
+            zelle = document.getElementById(id)
+            zelle.classList = id
+            zelle.innerHTML = "<h5></h5>"
+
+        }
+    }
+    zähler = 0
+    
+}
+
+function getScores(num) {
+    let scores = []
+    for (i=0;i<num;i++) {
+        clearAll()
+        scores.push(allMinions())
+    }
+
+    var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(scores));
+    var dlAnchorElem = document.getElementById('downloadAnchorElem');
+    dlAnchorElem.setAttribute("href",     dataStr     );
+    dlAnchorElem.setAttribute("download", "scores.json");
+    dlAnchorElem.click();
+
+    return scores
 }
 
 
-
-// Add 16 divs
+// Add divs
 for (let i = 1; i < 111; i++) {
     const div = document.createElement('div');
+    const h5 = document.createElement('h5');
+    div.appendChild(h5);
+
     cdiv.appendChild(div);
+
+    
+
+
 
     let rechnerechneZ = Math.floor((i - 1) / 11) + 1
     let rechnerechne = (i - 1) % 11
@@ -46,6 +97,8 @@ function getRandomInt(min, max) {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+
 
 function pkt() {
     anzPriester = 0
@@ -77,16 +130,16 @@ function pkt() {
             // console.log(zelle.classList)
 
             if (zelle.classList.contains("Priester")) {
-                zelle.innerText = (20 - anzPriester)
+                zelle.firstChild.innerText = (20 - anzPriester)
             } else if (zelle.classList.contains("Bogenschütze")) {
                 // Bogenschützen
-                zelle.innerText = "0"
+                zelle.firstChild.innerText = "0"
                 if (s > 1 && s < 10 && z > 1 && z < 10) {
-                    zelle.innerText = "4.5"
+                    zelle.firstChild.innerText = "4.5"
                     pktBogenschützen += 4.5
                 }
             } else if (zelle.classList.contains("Krieger")) {
-                zelle.innerText = "0"
+                zelle.firstChild.innerText = "0"
                 // Krieger
                 punkte = 0
 
@@ -105,7 +158,7 @@ function pkt() {
                 }
 
 
-                zelle.innerText = punkte
+                zelle.innerHTML = "<h5>" + punkte + "</h5>"
                 pktKrieger += punkte
 
             } else if (zelle.classList.contains("Assasine")) {
@@ -126,7 +179,7 @@ function pkt() {
                 }
 
                 pktAssasine = pktAssasine + punkte
-                zelle.innerText = punkte
+                zelle.firstChild.innerText = punkte
 
             } else if (zelle.classList.contains("Magier")) {
                 // Magier
@@ -170,7 +223,7 @@ function pkt() {
                     punkte = 5
                 }
 
-                zelle.innerText = punkte
+                zelle.firstChild.innerText = punkte
                 pktMagier += punkte
             } else if (zelle.classList.contains("Schutzwall")) {
                 // Schutzwall
@@ -186,7 +239,7 @@ function pkt() {
                     punkte = punkte +2
                 }
 
-                zelle.innerText = punkte
+                zelle.firstChild.innerText = punkte
 
                 pktSchutzwall = pktSchutzwall + punkte
 
@@ -275,3 +328,5 @@ function getClass(s, z) {
     }
     return klasse
 } 
+
+
