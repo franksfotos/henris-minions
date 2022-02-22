@@ -6,7 +6,10 @@
        font-family: Inter, sans-serif;
   }
   
-
+  .border {
+      border: 2px solid black;
+      opacity: 0.8;
+    }
 
   .container {
     display: flex;
@@ -14,7 +17,7 @@
   }
   
   .container>div {
-    border: 0px solid black;
+    
     height: 60px;
     width: 60px;
     text-align: center;
