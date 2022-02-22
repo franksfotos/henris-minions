@@ -328,5 +328,3 @@ function getClass(s, z) {
     }
     return klasse
 } 
-
-
