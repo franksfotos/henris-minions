@@ -4,6 +4,54 @@ const farben = ['Krieger', 'Priester', 'Magier', 'Assasine', 'Schutzwall', 'Boge
 
 let zähler = 0;
 
+// Add divs
+for (let i = 1; i < 111; i++) {
+    const div = document.createElement('div');
+    div.onclick = function() {
+        // durchzählen
+        // wenn an, dann immer aus
+        // wenn aus, dann an, wenn 0 oder wenn 1 und nachbar
+        
+        div.classList.toggle("border")
+
+    };
+    
+    const h5 = document.createElement('h5');
+    div.appendChild(h5);
+
+    cdiv.appendChild(div);
+
+    
+
+
+
+    let rechnerechneZ = Math.floor((i - 1) / 11) + 1
+    let rechnerechne = (i - 1) % 11
+
+    if (rechnerechne != 0) {
+        div.id = rechnerechne + "-" + rechnerechneZ
+    }
+
+    // div.innerText = farben
+
+}
+
+function tauschen()
+{
+    for (z = 1; z < 11; z++) {
+        for (s = 1; s < 11; s++) {
+            id = s + "-" + z
+            //console.log(id)
+            zelle = document.getElementById(id)
+            if (zelle.classList.contains("border")) {
+                console.log(id)
+            }
+
+        }
+    }
+
+}
+
 function nextMinion() {
     // console.log(zähler)
     zeile = Math.floor(zähler / 10) + 1
@@ -68,28 +116,6 @@ function getScores(num) {
 }
 
 
-// Add divs
-for (let i = 1; i < 111; i++) {
-    const div = document.createElement('div');
-    const h5 = document.createElement('h5');
-    div.appendChild(h5);
-
-    cdiv.appendChild(div);
-
-    
-
-
-
-    let rechnerechneZ = Math.floor((i - 1) / 11) + 1
-    let rechnerechne = (i - 1) % 11
-
-    if (rechnerechne != 0) {
-        div.id = rechnerechne + "-" + rechnerechneZ
-    }
-
-    // div.innerText = farben
-
-}
 
 
 function getRandomInt(min, max) {
@@ -328,3 +354,5 @@ function getClass(s, z) {
     }
     return klasse
 } 
+
+
