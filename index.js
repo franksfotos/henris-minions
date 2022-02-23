@@ -7,21 +7,16 @@ let zähler = 0;
 // Add divs
 for (let i = 1; i < 111; i++) {
     const div = document.createElement('div');
-    div.onclick = function() {
-        // durchzählen
-        // wenn an, dann immer aus
-        // wenn aus, dann an, wenn 0 oder wenn 1 und nachbar
-        
-        div.classList.toggle("border")
-
+    div.onclick = function () {
+        toggle(div)
     };
-    
+
     const h5 = document.createElement('h5');
     div.appendChild(h5);
 
     cdiv.appendChild(div);
 
-    
+
 
 
 
@@ -36,20 +31,74 @@ for (let i = 1; i < 111; i++) {
 
 }
 
-function tauschen()
-{
+function toggle(div) {
+    // console.log(div)
+
+    div_sz = div.id.split("-").map(Number)
+
+
+    if (div.classList.contains("border")) {
+        div.classList.toggle("border")
+    } else {
+        clicked = []
+        for (z = 1; z < 11; z++) {
+            for (s = 1; s < 11; s++) {
+                id = s + "-" + z
+                //console.log(id)
+                zelle = document.getElementById(id)
+                if (zelle.classList.contains("border")) {
+                    clicked.push([s, z])
+                }
+            }
+
+        }
+
+       // console.log(clicked)
+
+        if (clicked.length == 1) {
+            if(Math.abs(clicked[0][0] - div_sz[0])<2 && clicked[0][1] - div_sz[1] == 0 || Math.abs(clicked[0][1] - div_sz[1])<2 && clicked[0][0] - div_sz[0] == 0 ) {
+                div.classList.toggle("border")    
+            }
+
+        } 
+
+
+        if (clicked.length == 0) {
+            div.classList.toggle("border")
+        }
+
+    }
+
+
+}
+
+
+function tauschen() {
+    swap = []
+
+    
     for (z = 1; z < 11; z++) {
         for (s = 1; s < 11; s++) {
             id = s + "-" + z
-            //console.log(id)
             zelle = document.getElementById(id)
             if (zelle.classList.contains("border")) {
-                console.log(id)
+                swap.push(zelle)            
+
             }
 
         }
     }
 
+    if (swap.length == 2) {
+        swapstring = swap[0].classList.toString()
+
+        swap[0].classList = swap[1].classList
+        swap[1].classList = swapstring
+        swap[0].classList.toggle("border")
+        swap[1].classList.toggle("border")
+    }
+
+    pkt()
 }
 
 function nextMinion() {
@@ -69,19 +118,19 @@ function allMinions() {
     for (c = 0; c < 100; c++)
         nextMinion()
     // console.log(pktGesamt)
-    
+
     result = {
-        "Krieger" : pktKrieger,
-        "Bogenschützen" : pktBogenschützen,
-        "Assasine" : pktAssasine,
-        "Schutzwall" : pktSchutzwall,
-        "Magier" : pktMagier,
-        "Priester" : pktPriester,
-        "GESAMT" : pktGesamt
+        "Krieger": pktKrieger,
+        "Bogenschützen": pktBogenschützen,
+        "Assasine": pktAssasine,
+        "Schutzwall": pktSchutzwall,
+        "Magier": pktMagier,
+        "Priester": pktPriester,
+        "GESAMT": pktGesamt
     }
 
     return (result)
-    
+
 }
 
 function clearAll() {
@@ -96,19 +145,19 @@ function clearAll() {
         }
     }
     zähler = 0
-    
+
 }
 
 function getScores(num) {
     let scores = []
-    for (i=0;i<num;i++) {
+    for (i = 0; i < num; i++) {
         clearAll()
         scores.push(allMinions())
     }
 
     var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(scores));
     var dlAnchorElem = document.getElementById('downloadAnchorElem');
-    dlAnchorElem.setAttribute("href",     dataStr     );
+    dlAnchorElem.setAttribute("href", dataStr);
     dlAnchorElem.setAttribute("download", "scores.json");
     dlAnchorElem.click();
 
@@ -253,16 +302,16 @@ function pkt() {
                 pktMagier += punkte
             } else if (zelle.classList.contains("Schutzwall")) {
                 // Schutzwall
-                
+
                 punkte = 0
-                size = SWFeld(s,z, [], 0)
-                
+                size = SWFeld(s, z, [], 0)
+
                 if (size > 1) {
                     punkte = punkte + size
                 }
-                
-                if (s==1 || s==10 || z == 1|| z == 10) {
-                    punkte = punkte +2
+
+                if (s == 1 || s == 10 || z == 1 || z == 10) {
+                    punkte = punkte + 2
                 }
 
                 zelle.firstChild.innerText = punkte
@@ -277,7 +326,7 @@ function pkt() {
 
     pktPriester = (20 - anzPriester) * anzPriester
 
-    pktGesamt = pktAssasine + pktBogenschützen + pktKrieger + pktMagier + pktPriester+ pktSchutzwall
+    pktGesamt = pktAssasine + pktBogenschützen + pktKrieger + pktMagier + pktPriester + pktSchutzwall
 
     document.getElementById("pktPriester").innerText = pktPriester
     document.getElementById("pktBogenschützen").innerText = pktBogenschützen
@@ -289,37 +338,37 @@ function pkt() {
     document.getElementById("pktGesamt").innerText = pktGesamt
 }
 
-function hausnummer(s,z) {
-    if (s > 0 && s < 11  && z > 0 && z< 11) {
-        return((z - 1) * 10 + s)
+function hausnummer(s, z) {
+    if (s > 0 && s < 11 && z > 0 && z < 11) {
+        return ((z - 1) * 10 + s)
     } else {
         return 0
     }
 
-    
+
 }
 
-function SWFeld(s,z, hausnummern, size) {    
+function SWFeld(s, z, hausnummern, size) {
     size += 1
-    hausnummern.push(hausnummer(s,z))
-    
-    if ( getClass(s-1, z) == "Schutzwall" && !hausnummern.includes(hausnummer(s-1,z)))  {  
-        size = SWFeld(s-1,z, hausnummern, size)
+    hausnummern.push(hausnummer(s, z))
+
+    if (getClass(s - 1, z) == "Schutzwall" && !hausnummern.includes(hausnummer(s - 1, z))) {
+        size = SWFeld(s - 1, z, hausnummern, size)
     }
 
-    if ( getClass(s+1, z) == "Schutzwall" && !hausnummern.includes(hausnummer(s+1,z)))  {  
-        size = SWFeld(s+1,z, hausnummern, size)
+    if (getClass(s + 1, z) == "Schutzwall" && !hausnummern.includes(hausnummer(s + 1, z))) {
+        size = SWFeld(s + 1, z, hausnummern, size)
     }
 
-    if ( getClass(s, z-1) == "Schutzwall" && !hausnummern.includes(hausnummer(s ,z-1)))  {  
-        size = SWFeld(s, z-1, hausnummern, size)
+    if (getClass(s, z - 1) == "Schutzwall" && !hausnummern.includes(hausnummer(s, z - 1))) {
+        size = SWFeld(s, z - 1, hausnummern, size)
     }
 
-    if ( getClass(s, z+1) == "Schutzwall" && !hausnummern.includes(hausnummer(s ,z+1)))  {  
-        size = SWFeld(s, z+1, hausnummern, size)
+    if (getClass(s, z + 1) == "Schutzwall" && !hausnummern.includes(hausnummer(s, z + 1))) {
+        size = SWFeld(s, z + 1, hausnummern, size)
     }
 
-    
+
     return size
 }
 
@@ -353,6 +402,6 @@ function getClass(s, z) {
 
     }
     return klasse
-} 
+}
 
 
